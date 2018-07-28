@@ -88,57 +88,11 @@ delete(hObject);
 % --- Executes on button press in pushbutton3.
 function pushbutton3_Callback(hObject, eventdata, handles)
 global tu
-%  ÔØÈëÍ¼Ïñ. 
+%  è½½å…¥å›¾åƒ. 
   % hObject      handle to loadIm (see GCBO) 
   % eventdata   reserved - to be defined in a future version of MATLAB 
   % handles      structure with handles and user data (see GUIDATA) 
-      [fName dirName] = uigetfile('*.bmp;*.tif;*.jpg;*.png');    % ÔÚµ¯³ö´°¿ÚÖĞÖ¸¶¨ÎÄ¼ş
-      if fName
-              cd(dirName);                              %  ½øÈëÄ¿Â¼
-              im = imread(fName);                       %  ¶ÁÈ¡Í¼Ïñ
-              tu=im;
-              handles.current_fig_name = fName;   
-              imshow(im ,'Parent',handles.neurons);
-              h=dialog('name','ÏûÏ¢Í¨Öª','position',[900 400 200 70]);  
-              uicontrol('parent',h,'style','text','string','Í¼Æ¬¼ÓÔØ³É¹¦£¡','position',[50 40 120 20],'fontsize',12);  
-              uicontrol('parent',h,'style','pushbutton','position',...  
-              [80 10 50 20],'string','È·¶¨','callback','delete(gcbf)'); 
-              colormap('gray');     
-              axis off;            
-      end
-  % Update handles structure
-         guidata(hObject, handles); 
-
-
-
-% --- Executes on button press in pushbutton5.
-function pushbutton5_Callback(hObject, eventdata, handles)
-global tu
-global saliencymap
-% hObject    handle to pushbutton5 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-% im = getimage(handles.neurons);
-% %È«¾ÖÏÔÖøĞÔÌØÕ÷Í¼
-% im=getimage(handles.neurons);
-im=tu;
-lab=im;
-param.sigma_s=16;
-[height,width,~] = size(im);
-sigma = ceil(min(height,width)/param.sigma_s);
-hsize = 10*sigma;
-l = double(lab(:,:,1));  lomega = imfilter(l,fspecial('gaussian',hsize,sigma),'symmetric','conv');
-a = double(lab(:,:,1));  aomega = imfilter(a,fspecial('gaussian',hsize,sigma),'symmetric','conv');
-b = double(lab(:,:,1));  bomega = imfilter(b,fspecial('gaussian',hsize,sigma),'symmetric','conv');
-SalMap= (l-double(lomega)).^2 + (a-double(aomega)).^2 + (b-double(bomega)).^2;
-SalMap=im2uint8(mat2gray(SalMap));
-% imshow(SalMap,[],'Parent',handles.axes2);
-% imshow(SalMap,[],'Parent',handles.axes2);
-axis off;
-
-%%%%ÎÆÀíÏÔÖøĞÔ
-f1 = gabor2(im,0);
-f2= gabor2(im,pi/4);
+    
 f3= gabor2(im,pi/2);
 f4 = gabor2(im,pi/4*3);
 f5=(f1+f2+f3+f4)/4;
@@ -146,13 +100,13 @@ f5=imresize(f5,[height width]);
 % imshow(f5,'Parent',handles.axes3);
 axis off;
 
-%%Í¼Æ¬ÈÚºÏ
+%%å›¾ç‰‡èåˆ
 saliencymap=mat2gray(double(SalMap).*f5);
 imshow(saliencymap,'Parent',handles.neurons);
-              h=dialog('name','ÏûÏ¢Í¨Öª','position',[900 400 200 70]);  
-              uicontrol('parent',h,'style','text','string','È±Ïİ¼ì²âÍê³É£¡','position',[50 40 120 20],'fontsize',10);  
+              h=dialog('name','æ¶ˆæ¯é€šçŸ¥','position',[900 400 200 70]);  
+              uicontrol('parent',h,'style','text','string','ç¼ºé™·æ£€æµ‹å®Œæˆï¼','position',[50 40 120 20],'fontsize',10);  
               uicontrol('parent',h,'style','pushbutton','position',...  
-              [80 10 50 20],'string','È·¶¨','callback','delete(gcbf)'); 
+              [80 10 50 20],'string','ç¡®å®š','callback','delete(gcbf)'); 
 axis off;
 
 
@@ -187,34 +141,17 @@ function axes3_CreateFcn(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
-
-% Hint: place code in OpeningFcn to populate axes3
-
-
-% --- Executes on button press in pushbutton7.
-function pushbutton7_Callback(hObject, eventdata, handles)
-global tu 
-global saliencymap
-% hObject    handle to pushbutton7 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-saliencymap=getimage(handles.neurons);
-bw=im2bw(saliencymap);          %½«Í¼Ïñ¶şÖµ»¯
-[r c]=find(bw==1);   
-[rectx,recty,area,perimeter] = minboundrect(c,r,'a'); % 'a'ÊÇ°´Ãæ»ıËãµÄ×îĞ¡¾ØĞÎ£¬Èç¹û°´±ß³¤ÓÃ'p'¡£  
-imshow(tu,'Parent',handles.neurons);
-line(rectx(:),recty(:),'color','y','LineWidth',1);
+or','y','LineWidth',1);
 % [L,m]=bwlabel(saliencymap,8);
 % if m>=1
-%     set(handles.text13,'String','ÓĞÈ±Ïİ');
+%     set(handles.text13,'String','æœ‰ç¼ºé™·');
 % else
-%     set(handles.text13,'String','Ã»ÓĞÈ±Ïİ');
+%     set(handles.text13,'String','æ²¡æœ‰ç¼ºé™·');
 
-h=dialog('name','ÏûÏ¢Í¨Öª','position',[900 400 200 70]);  
-uicontrol('parent',h,'style','text','string','È±Ïİ¶¨Î»Íê³É£¡','position',[50 40 120 20],'fontsize',12);  
+h=dialog('name','æ¶ˆæ¯é€šçŸ¥','position',[900 400 200 70]);  
+uicontrol('parent',h,'style','text','string','ç¼ºé™·å®šä½å®Œæˆï¼','position',[50 40 120 20],'fontsize',12);  
 uicontrol('parent',h,'style','pushbutton','position',...  
-[80 10 50 20],'string','È·¶¨','callback','delete(gcbf)'); 
+[80 10 50 20],'string','ç¡®å®š','callback','delete(gcbf)'); 
 axis off;
 
 
@@ -235,10 +172,10 @@ str4=get(handles.edit4,'string');
 maxIter=str2num(str4);
 S = tsmooth(I,lambda,sigma,sharpness,maxIter);
 imshow(S,[],'Parent',handles.neurons);
-h=dialog('name','ÏûÏ¢Í¨Öª','position',[900 400 200 70]);  
-uicontrol('parent',h,'style','text','string','±³¾°ÒÖÖÆÍê³É£¡','position',[50 40 120 20],'fontsize',12);  
+h=dialog('name','æ¶ˆæ¯é€šçŸ¥','position',[900 400 200 70]);  
+uicontrol('parent',h,'style','text','string','èƒŒæ™¯æŠ‘åˆ¶å®Œæˆï¼','position',[50 40 120 20],'fontsize',12);  
 uicontrol('parent',h,'style','pushbutton','position',...  
-[80 10 50 20],'string','È·¶¨','callback','delete(gcbf)'); 
+[80 10 50 20],'string','ç¡®å®š','callback','delete(gcbf)'); 
 axis off;
 
 
@@ -256,24 +193,7 @@ function edit1_Callback(hObject, eventdata, handles)
 function edit1_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to edit1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
-
-function edit3_Callback(hObject, eventdata, handles)
-% hObject    handle to edit3 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of edit3 as text
-%        str2double(get(hObject,'String')) returns contents of edit3 as a double
-
+% handles    empty -
 
 % --- Executes during object creation, after setting all properties.
 function edit3_CreateFcn(hObject, eventdata, handles)
@@ -381,28 +301,9 @@ end
 function pushbutton12_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton12 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-[FileName,PathName] = uiputfile({'*.jpg','JPEG(*.jpg)';...
-                                 '*.bmp','Bitmap(*.bmp)';...
-                                 '*.gif','GIF(*.gif)';...
-                                 '*.png','PNG(*.png)';...
-                                 '*.*',  'All Files (*.*)'},...
-                                 '±£´æÍ¼Æ¬','Untitled');
-      if FileName==0
-         %disp('Save Failure');
-         h=getimage(handles.neurons);
-         imwrite(h,[PathName,FileName]);
-         h=dialog('name','ÏûÏ¢Í¨Öª','position',[900 400 200 70]);  
-         uicontrol('parent',h,'style','text','string','±£´æÊ§°Ü£¡','position',[50 40 120 20],'fontsize',12);  
+% handles ,'string','ä¿å­˜æˆåŠŸï¼','position',[50 40 120 20],'fontsize',12);  
          uicontrol('parent',h,'style','pushbutton','position',...  
-         [80 10 50 20],'string','È·¶¨','callback','delete(gcbf)'); 
-      else
-         h=getimage(handles.neurons);
-         imwrite(h,[PathName,FileName]);
-         h=dialog('name','ÏûÏ¢Í¨Öª','position',[900 400 200 70]);  
-         uicontrol('parent',h,'style','text','string','±£´æ³É¹¦£¡','position',[50 40 120 20],'fontsize',12);  
-         uicontrol('parent',h,'style','pushbutton','position',...  
-         [80 10 50 20],'string','È·¶¨','callback','delete(gcbf)'); 
+         [80 10 50 20],'string','ç¡®å®š','callback','delete(gcbf)'); 
       end;
 
 
@@ -427,8 +328,8 @@ function pushbutton14_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton14 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-button=questdlg('ÊÇ·ñÈ·ÈÏ¹Ø±Õ','¹Ø±ÕÈ·ÈÏ','ÊÇ','·ñ','ÊÇ');
-if strcmp(button,'ÊÇ')
+button=questdlg('æ˜¯å¦ç¡®è®¤å…³é—­','å…³é—­ç¡®è®¤','æ˜¯','å¦','æ˜¯');
+if strcmp(button,'æ˜¯')
     close(detection);
 else
     return;
