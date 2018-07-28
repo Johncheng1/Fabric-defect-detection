@@ -21,4 +21,5 @@ Fabric defect detection based on computer vision
 ![image](https://github.com/Johncheng1/Fabric-defect-detection/blob/master/image/1.6.jpg)
 
                                  退出系统界面图
-![image](https://github.com/Johncheng1/Fabric-defect-detection/blob/master/image/1.7.jpg)                       
+![image](https://github.com/Johncheng1/Fabric-defect-detection/blob/master/image/1.7.jpg)
+
